@@ -1,7 +1,7 @@
 import { Field, InputType, ObjectType, registerEnumType } from "@nestjs/graphql";
 import { CoreEntity } from "src/common/entities/core.entity";
 import * as bcrypt from 'bcrypt';   
-import { BeforeInsert, Column, Entity } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity } from "typeorm";
 import { InternalServerErrorException } from "@nestjs/common";
 import { IsEmail, IsEnum, IsString, isString } from "class-validator";
 enum UserRole {
@@ -12,7 +12,7 @@ enum UserRole {
 
 registerEnumType(UserRole, {name: "UserRole"})
 
-@InputType({ })
+@InputType({ isAbstract: true })
 @ObjectType()
 @Entity()
 export class User extends CoreEntity{
@@ -33,6 +33,7 @@ export class User extends CoreEntity{
   role: UserRole;
 
   @BeforeInsert()
+  @BeforeUpdate()
   async hashPassword():Promise<void>{
     try{
       // DB에 저장 되기 전에 user.service 파일 내에 create로 instance를 생성.

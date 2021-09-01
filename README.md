@@ -81,3 +81,11 @@ if (process.env.NODE_ENV === 'production') {
 ### Entity Listener
 - entity에 무슨일이 생길 때 실행.
 
+### Static Module VS Dynamic Module 
+-  Dynamic Module ? 설정이 적용되어있는 모듈. 또 다른 모듈을    반환한다.
+-  Static Module ? 어떤 설정도 되어있지 않은 모듈.
+-  Dynamic Module은 결과적으로 Static Module이 된다.
+
+### authentication & authorization
+- authentication ? 누가 자원을 요청 하는지 확인하는 과정(ex. token으로 identity를 확인) 
+- authorization ? user가 어떤일을 하기 전에 permission을 가지고 있는지 확인하는 과정.
