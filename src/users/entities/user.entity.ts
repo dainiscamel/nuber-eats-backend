@@ -21,7 +21,7 @@ export class User extends CoreEntity{
   @IsEmail()
   email: string;
 
-  @Column()
+  @Column({select: false})
   @Field(type => String)
   password: string;
 
@@ -32,14 +32,20 @@ export class User extends CoreEntity{
   @IsEnum(UserRole)
   role: UserRole;
 
+  @Column({default:false})
+  @Field(type => Boolean)
+  verified: boolean;
+
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword():Promise<void>{
-    try{
-      // DB에 저장 되기 전에 user.service 파일 내에 create로 instance를 생성.
-      this.password = await bcrypt.hash(this.password,10)
-    }catch(e){
-      throw new InternalServerErrorException()
+    if(this.password){ 
+     try{
+        // DB에 저장 되기 전에 user.service 파일 내에 create로 instance를 생성.
+        this.password = await bcrypt.hash(this.password,10)
+      }catch(e){
+        throw new InternalServerErrorException()
+      }
     }
   }
 
