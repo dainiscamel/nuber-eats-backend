@@ -1,8 +1,6 @@
-import { NumberLiteralTypeAnnotation } from '@babel/types';
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import * as jwt from "jsonwebtoken"
-import { CONFIG_OPTIONS } from './jwt.constants';
+import { CONFIG_OPTIONS } from 'src/common/common.constants';
 import { JwtModuleOptions } from './jwt.interfaces';
 
 @Injectable()
@@ -13,6 +11,7 @@ export class JwtService {
     // private readonly configService:ConfigService
   ) {}
   sign(userId: number):string{
+    console.log(userId);
     return jwt.sign({id:userId}, this.options.privateKey); 
     // return jwt.sign(payload, this.configService.get("PRIVATE_KEY")); 
   }
