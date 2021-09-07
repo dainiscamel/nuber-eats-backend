@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { JwtService } from 'src/jwt/jwt.service';
+import { MailService } from 'src/mail/mail.service';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { Verification } from './entities/verification.entity';
@@ -16,6 +17,10 @@ const mockJwtService = {
   sign: jest.fn(),
   verify: jest.fn(),
 };
+
+const mockMailService = {
+  sendVerificationEmail: jest.fn()
+}
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 
@@ -40,9 +45,14 @@ describe('UserService', () => {
           provide: JwtService,
           useValue: mockJwtService,
         },
+        {
+          provide: MailService,
+          useValue: mockMailService,
+        },
       ],
     }).compile();
     service = module.get<UserService>(UserService);
+    // 레퍼지토리를 가져온다.
     usersRepository = module.get(getRepositoryToken(User));
   });
 
@@ -58,6 +68,7 @@ describe('UserService', () => {
     };
 
     it('should fail if user exists', async () => {
+      // Promise.resolve(value)하는 것과 동일
       // findOne이 리턴 하는 값을 작성
       usersRepository.findOne.mockResolvedValue({
         id: 1,
@@ -70,10 +81,12 @@ describe('UserService', () => {
       });
     });
     it('should create a new user', async () => {
+      // 유저가 존재 하지 않는것 처럼 값 설정.
       usersRepository.findOne.mockResolvedValue(undefined);
       usersRepository.create.mockReturnValue(createAccountArgs);
       await service.createAccount(createAccountArgs);
       expect(usersRepository.create).toHaveBeenCalledTimes(1);
+      // 함께 호출되어야하는 argument 정의
       expect(usersRepository.create).toHaveBeenCalledWith(createAccountArgs);
       expect(usersRepository.save).toHaveBeenCalledTimes(1);
       expect(usersRepository.save).toHaveBeenCalledWith(createAccountArgs);
