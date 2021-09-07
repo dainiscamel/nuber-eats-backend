@@ -11,7 +11,6 @@ export class JwtService {
     // private readonly configService:ConfigService
   ) {}
   sign(userId: number):string{
-    console.log(userId);
     return jwt.sign({id:userId}, this.options.privateKey); 
     // return jwt.sign(payload, this.configService.get("PRIVATE_KEY")); 
   }

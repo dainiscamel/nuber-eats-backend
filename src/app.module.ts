@@ -55,16 +55,16 @@ import { MailModule } from './mail/mail.module';
       // apollo server context ?  함수가 정의되면 매 request마다 호출된다.
       context:({req}) => ({user: req['user']})
     }),
+    // Static Module
+    JwtModule.forRoot({
+      privateKey: process.env.PRIVATE_KEY
+    }),
     MailModule.forRoot({
       apiKey:process.env.MAILGUN_API_KEY,
       domain:process.env.MAILGUN_DOMAIN_NAME,
       fromEmail:process.env.MAILGUN_FROM_EMAIL
     }),
-    // Static Module
     UsersModule,
-    JwtModule.forRoot({
-      privateKey: process.env.PRIVATE_KEY
-    }),
   ],
   controllers: [],
   providers: [],
