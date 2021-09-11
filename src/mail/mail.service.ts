@@ -34,9 +34,7 @@ export class MailService {
         },
         body: form,
       });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   sendVerificationEmail(email: string, code: string) {
