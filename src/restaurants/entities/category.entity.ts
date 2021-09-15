@@ -11,18 +11,27 @@ import { Restaurant } from "./restaurant.entity";
 @Entity()
 export class Category extends CoreEntity{
   @Field(type => String) // Graphql
-  @Column() // DB
+  @Column({unique:true}) // DB
   @IsString()
   @Length(5)
   name: string;
 
-  @Field(type => String)
-  @Column()
+  @Field(type => String,{nullable:true})
+  @Column({nullable:true})
   @IsString()
   coverImg: string; 
 
-  @Field(type=> [Restaurant])
+  @Field(type => String)
+  @Column({unique:true})
+  @IsString()
+  slug: string;
+
+
   // 어떤 entity에서 적용되는지 작성
-  @OneToMany(type => Restaurant,restaurant => restaurant.category)
+  @Field(type => [Restaurant], { nullable: true })
+  @OneToMany(
+    type => Restaurant,
+    restaurant => restaurant.category,
+  )
   restaurants: Restaurant[];
 }

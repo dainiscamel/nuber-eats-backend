@@ -2,7 +2,7 @@ import { Field, InputType, ObjectType } from "@nestjs/graphql";
 import { IsString, Length } from "class-validator";
 import { CoreEntity } from "src/common/entities/core.entity";
 import { User } from "src/users/entities/user.entity";
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
 import { Category } from "./category.entity";
 
 //isAbstract를 사용하여 InputType이 스키마에 포함되지 않게 하고,다른 type으로 변형하여 사용할 수 있다.
@@ -29,13 +29,13 @@ export class Restaurant extends CoreEntity{
 
   // 레스토랑은 오직 하나의 카테고리만 가직 수 있다.
   @Field(type => Category,{nullable:true})
-  @OneToMany(type=> Category, category=> category.restaurants,{
+  @ManyToOne(type=> Category, category=> category.restaurants,{
     nullable:true, onDelete: 'SET NULL'
   })
   category: Category;
 
   @Field(type => User,{nullable:true})
-  @OneToMany(type=> User, category=> category.restaurants)
+  @ManyToOne(type=> User, category=> category.restaurants)
   owner: User;
 
 }
