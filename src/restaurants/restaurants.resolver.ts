@@ -1,6 +1,8 @@
+import { SetMetadata } from "@nestjs/common";
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { AuthUser } from "src/auth/auth-user.decorator";
-import { User } from "src/users/entities/user.entity";
+import { Role } from "src/auth/role.decorator";
+import { User, UserRole } from "src/users/entities/user.entity";
 import { CreateRestaurantInput, CreateRestaurantOutput } from "./dtos/create-restaurant.dto";
 import { Restaurant } from "./entities/restaurant.entity";
 import { RestaurantService } from "./restaurants.service";
@@ -14,6 +16,7 @@ export class RestaurantResolver{
   @Mutation(returns => CreateRestaurantOutput)
   // dto에서 @InputType을 사용한 경우 객체 전달
   // createRestaurant(@Args('input') createRestaurantInput: CreateRestaurantInput): boolean {
+    @Role(["Owner"])
     async createRestaurant(
       @AuthUser() authUser:User,
       @Args('input') createRestaurantInput: CreateRestaurantInput,
