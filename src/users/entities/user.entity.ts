@@ -6,6 +6,7 @@ import { InternalServerErrorException } from "@nestjs/common";
 import { IsBoolean, IsEmail, IsEnum, IsString, isString } from "class-validator";
 import { Restaurant } from "src/restaurants/entities/restaurant.entity";
 
+// enum은 데이터베이스 graphql을 위해서 그리고 decorator을 위해서 사용.
 export enum UserRole {
   Client = 'Client',
   Owner = 'Owner',
